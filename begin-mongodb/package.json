@@ -2,14 +2,14 @@
   "dependencies": {
     "cors": "^2.8.6",
     "express": "^5.2.1",
-    "mongoose": "^9.3.3",
     "multer": "^2.1.1"
   },
-  "name": "begin-mongodb",
+  "name": "core-metrics-server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Core Metrics API Server",
   "main": "app.js",
   "scripts": {
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

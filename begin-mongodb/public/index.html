@@ -1,17 +1,74 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <h1>House API</h1>
-    <h2>See All Houses </h2>
-    <p><a href="/api/houses">/api/houses</a></p>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Core Metrics API</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
 
-    <h2>Get Individual House</h2>
-    <p><a href="/api/houses/1">/api/houses/1</a></p>
+  <header>
+    <div class="header-brand">
+      <h1>Core <span>Metrics</span> API</h1>
+      <p>Recipes Data Service &nbsp;&middot;&nbsp; REST &nbsp;&middot;&nbsp; JSON</p>
+    </div>
+    <span class="header-badge">v1.0</span>
+  </header>
 
-    <h2>Get Individual Image</h2>
-    <p><a href="/images/hero.png">/images/hero.png</a></p>
-  </body>
+  <div class="container">
+
+    <div class="info-banner">
+      <div><strong>Format:</strong> JSON</div>
+      <div><strong>Auth:</strong> None required</div>
+      <div><strong>CORS:</strong> Enabled</div>
+    </div>
+
+    <h2 class="section-title">Available Endpoints</h2>
+
+    <div class="endpoint-card">
+      <div class="endpoint-left">
+        <span class="method">GET</span>
+        <div>
+          <div class="endpoint-path">/api/recipes</div>
+          <div class="endpoint-desc">Returns all 10 recipes as a JSON array</div>
+        </div>
+      </div>
+      <a href="/api/recipes" target="_blank" class="try-btn">All Recipes &rarr;</a>
+    </div>
+
+    <div class="endpoint-card">
+      <div class="endpoint-left">
+        <span class="method">GET</span>
+        <div>
+          <div class="endpoint-path">/api/recipes/:id</div>
+          <div class="endpoint-desc">Returns a single recipe by ID (1&ndash;10)</div>
+        </div>
+      </div>
+      <a href="/api/recipes/1" target="_blank" class="try-btn">Example &rarr;</a>
+    </div>
+
+    <h2 class="section-title" style="margin-top:40px;">Sample Response</h2>
+    <div class="sample-box">
+      <pre>{
+  "_id": 1,
+  "name": "Grilled Chicken &amp; Veggie Bowl",
+  "category": "High Protein",
+  "calories": 520,
+  "protein": 45,
+  "carbs": 38,
+  "fat": 14,
+  "prep_time": "25 min",
+  "description": "A high-protein bowl perfect for post-workout recovery.",
+  "ingredients": "6 oz grilled chicken breast, ...",
+  "instructions": "1. Season chicken...",
+  "main_image": "images/chicken-bowl.webp"
+}</pre>
+    </div>
+
+  </div>
+
+  <footer>&copy; 2025 Core Metrics &nbsp;&middot;&nbsp; CSCE 242</footer>
+
+</body>
 </html>
