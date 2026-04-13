@@ -122,10 +122,10 @@ app.listen(3001, () => {
     console.log("Server is running on port 3001");
 });
 */
-
 const express = require("express");
 const cors = require("cors");
 const multer = require("multer");
+const Joi = require("joi");
 
 const app = express();
 app.use(express.static("public"));
@@ -142,157 +142,211 @@ const upload = multer({ storage: storage });
 
 let recipes = [
   {
-    "_id": 1,
-    "name": "Grilled Chicken & Veggie Bowl",
-    "category": "High Protein",
-    "calories": 520,
-    "protein": 45,
-    "carbs": 38,
-    "fat": 14,
-    "prep_time": "25 min",
-    "description": "A high-protein bowl perfect for post-workout recovery.",
-    "ingredients": "6 oz grilled chicken breast, 1 cup mixed veggies (bell pepper, zucchini, broccoli), 1/2 cup brown rice, 1 tbsp olive oil, salt, pepper, garlic powder.",
-    "instructions": "1. Season chicken with salt, pepper, and garlic powder. Grill for 6-7 min per side. 2. Sauté veggies in olive oil for 5 minutes. 3. Serve over cooked brown rice.",
-    "main_image": "images/chicken-bowl.webp"
+    _id: 1,
+    name: "Grilled Chicken & Veggie Bowl",
+    category: "High Protein",
+    calories: 520,
+    protein: 45,
+    carbs: 38,
+    fat: 14,
+    prep_time: "25 min",
+    description: "A high-protein bowl perfect for post-workout recovery.",
+    ingredients:
+      "6 oz grilled chicken breast, 1 cup mixed veggies (bell pepper, zucchini, broccoli), 1/2 cup brown rice, 1 tbsp olive oil, salt, pepper, garlic powder.",
+    instructions:
+      "1. Season chicken with salt, pepper, and garlic powder. Grill for 6-7 min per side. 2. Sauté veggies in olive oil for 5 minutes. 3. Serve over cooked brown rice.",
+    main_image: "images/chicken-bowl.webp",
   },
   {
-    "_id": 2,
-    "name": "Avocado & Egg Toast",
-    "category": "Breakfast",
-    "calories": 380,
-    "protein": 18,
-    "carbs": 32,
-    "fat": 20,
-    "prep_time": "10 min",
-    "description": "A quick and healthy breakfast to start your day right.",
-    "ingredients": "2 slices whole grain bread, 1 ripe avocado, 2 eggs, lemon juice, red pepper flakes, salt and pepper.",
-    "instructions": "1. Toast bread. 2. Mash avocado with lemon juice, salt, and pepper. 3. Fry or poach eggs. 4. Spread avocado on toast and top with eggs and red pepper flakes.",
-    "main_image": "images/avo-toast.webp"
+    _id: 2,
+    name: "Avocado & Egg Toast",
+    category: "Breakfast",
+    calories: 380,
+    protein: 18,
+    carbs: 32,
+    fat: 20,
+    prep_time: "10 min",
+    description: "A quick and healthy breakfast to start your day right.",
+    ingredients:
+      "2 slices whole grain bread, 1 ripe avocado, 2 eggs, lemon juice, red pepper flakes, salt and pepper.",
+    instructions:
+      "1. Toast bread. 2. Mash avocado with lemon juice, salt, and pepper. 3. Fry or poach eggs. 4. Spread avocado on toast and top with eggs and red pepper flakes.",
+    main_image: "images/avo-toast.webp",
   },
   {
-    "_id": 3,
-    "name": "Greek Yogurt Parfait",
-    "category": "Snack",
-    "calories": 290,
-    "protein": 20,
-    "carbs": 35,
-    "fat": 6,
-    "prep_time": "5 min",
-    "description": "Creamy yogurt layered with berries and granola.",
-    "ingredients": "1 cup plain Greek yogurt, 1/3 cup granola, 1/2 cup mixed berries, 1 tsp honey.",
-    "instructions": "1. Add yogurt to a bowl. 2. Layer with granola and berries. 3. Drizzle with honey. Serve immediately.",
-    "main_image": "images/parfait.webp"
+    _id: 3,
+    name: "Greek Yogurt Parfait",
+    category: "Snack",
+    calories: 290,
+    protein: 20,
+    carbs: 35,
+    fat: 6,
+    prep_time: "5 min",
+    description: "Creamy yogurt layered with berries and granola.",
+    ingredients:
+      "1 cup plain Greek yogurt, 1/3 cup granola, 1/2 cup mixed berries, 1 tsp honey.",
+    instructions:
+      "1. Add yogurt to a bowl. 2. Layer with granola and berries. 3. Drizzle with honey. Serve immediately.",
+    main_image: "images/parfait.webp",
   },
   {
-    "_id": 4,
-    "name": "Salmon & Quinoa Plate",
-    "category": "Omega-3 Rich",
-    "calories": 480,
-    "protein": 42,
-    "carbs": 30,
-    "fat": 18,
-    "prep_time": "30 min",
-    "description": "Omega-3 rich salmon served over fluffy quinoa with greens.",
-    "ingredients": "5 oz salmon fillet, 3/4 cup cooked quinoa, 1 cup spinach, 1 lemon, 1 tbsp olive oil, salt, dill.",
-    "instructions": "1. Season salmon with salt, dill, and lemon juice. Bake at 400°F for 12-15 min. 2. Cook quinoa per package. 3. Serve salmon over quinoa with fresh spinach.",
-    "main_image": "images/salmon.webp"
+    _id: 4,
+    name: "Salmon & Quinoa Plate",
+    category: "Omega-3 Rich",
+    calories: 480,
+    protein: 42,
+    carbs: 30,
+    fat: 18,
+    prep_time: "30 min",
+    description: "Omega-3 rich salmon served over fluffy quinoa with greens.",
+    ingredients:
+      "5 oz salmon fillet, 3/4 cup cooked quinoa, 1 cup spinach, 1 lemon, 1 tbsp olive oil, salt, dill.",
+    instructions:
+      "1. Season salmon with salt, dill, and lemon juice. Bake at 400°F for 12-15 min. 2. Cook quinoa per package. 3. Serve salmon over quinoa with fresh spinach.",
+    main_image: "images/salmon.webp",
   },
   {
-    "_id": 5,
-    "name": "Turkey & Spinach Wrap",
-    "category": "Lunch",
-    "calories": 410,
-    "protein": 35,
-    "carbs": 40,
-    "fat": 10,
-    "prep_time": "10 min",
-    "description": "A lean, filling wrap loaded with turkey and fresh greens.",
-    "ingredients": "1 large whole wheat tortilla, 4 oz sliced turkey, 1 cup spinach, 2 tbsp hummus, tomato, cucumber.",
-    "instructions": "1. Spread hummus on tortilla. 2. Layer turkey, spinach, tomato, and cucumber. 3. Roll tightly and slice in half.",
-    "main_image": "images/wrap.webp"
+    _id: 5,
+    name: "Turkey & Spinach Wrap",
+    category: "Lunch",
+    calories: 410,
+    protein: 35,
+    carbs: 40,
+    fat: 10,
+    prep_time: "10 min",
+    description: "A lean, filling wrap loaded with turkey and fresh greens.",
+    ingredients:
+      "1 large whole wheat tortilla, 4 oz sliced turkey, 1 cup spinach, 2 tbsp hummus, tomato, cucumber.",
+    instructions:
+      "1. Spread hummus on tortilla. 2. Layer turkey, spinach, tomato, and cucumber. 3. Roll tightly and slice in half.",
+    main_image: "images/wrap.webp",
   },
   {
-    "_id": 6,
-    "name": "Overnight Oats",
-    "category": "Breakfast",
-    "calories": 350,
-    "protein": 15,
-    "carbs": 55,
-    "fat": 8,
-    "prep_time": "5 min",
-    "description": "Make-ahead oats packed with fiber and natural energy.",
-    "ingredients": "1/2 cup rolled oats, 1/2 cup almond milk, 1/4 cup Greek yogurt, 1 tbsp chia seeds, 1 tsp honey, berries.",
-    "instructions": "1. Combine oats, milk, yogurt, and chia seeds. 2. Stir well and refrigerate overnight. 3. Top with berries and honey before serving.",
-    "main_image": "images/oats.webp"
+    _id: 6,
+    name: "Overnight Oats",
+    category: "Breakfast",
+    calories: 350,
+    protein: 15,
+    carbs: 55,
+    fat: 8,
+    prep_time: "5 min",
+    description: "Make-ahead oats packed with fiber and natural energy.",
+    ingredients:
+      "1/2 cup rolled oats, 1/2 cup almond milk, 1/4 cup Greek yogurt, 1 tbsp chia seeds, 1 tsp honey, berries.",
+    instructions:
+      "1. Combine oats, milk, yogurt, and chia seeds. 2. Stir well and refrigerate overnight. 3. Top with berries and honey before serving.",
+    main_image: "images/oats.webp",
   },
   {
-    "_id": 7,
-    "name": "Lentil Veggie Soup",
-    "category": "Plant-Based",
-    "calories": 310,
-    "protein": 18,
-    "carbs": 45,
-    "fat": 5,
-    "prep_time": "35 min",
-    "description": "A warm, hearty soup full of plant protein and fiber.",
-    "ingredients": "1 cup red lentils, 2 cups vegetable broth, 1 can diced tomatoes, 1 carrot, 2 celery stalks, 1 onion, garlic, cumin, turmeric.",
-    "instructions": "1. Sauté onion, garlic, carrot, and celery. 2. Add lentils, broth, tomatoes, and spices. 3. Simmer 25 minutes until lentils are tender.",
-    "main_image": "images/soup.webp"
+    _id: 7,
+    name: "Lentil Veggie Soup",
+    category: "Plant-Based",
+    calories: 310,
+    protein: 18,
+    carbs: 45,
+    fat: 5,
+    prep_time: "35 min",
+    description: "A warm, hearty soup full of plant protein and fiber.",
+    ingredients:
+      "1 cup red lentils, 2 cups vegetable broth, 1 can diced tomatoes, 1 carrot, 2 celery stalks, 1 onion, garlic, cumin, turmeric.",
+    instructions:
+      "1. Sauté onion, garlic, carrot, and celery. 2. Add lentils, broth, tomatoes, and spices. 3. Simmer 25 minutes until lentils are tender.",
+    main_image: "images/soup.webp",
   },
   {
-    "_id": 8,
-    "name": "Protein Smoothie",
-    "category": "Post-Workout",
-    "calories": 280,
-    "protein": 30,
-    "carbs": 28,
-    "fat": 5,
-    "prep_time": "5 min",
-    "description": "A fast recovery smoothie with banana, protein powder, and almond milk.",
-    "ingredients": "1 scoop vanilla protein powder, 1 banana, 1 cup almond milk, 1 tbsp peanut butter, ice.",
-    "instructions": "1. Add all ingredients to a blender. 2. Blend until smooth. 3. Serve immediately.",
-    "main_image": "images/smoothie.webp"
+    _id: 8,
+    name: "Protein Smoothie",
+    category: "Post-Workout",
+    calories: 280,
+    protein: 30,
+    carbs: 28,
+    fat: 5,
+    prep_time: "5 min",
+    description:
+      "A fast recovery smoothie with banana, protein powder, and almond milk.",
+    ingredients:
+      "1 scoop vanilla protein powder, 1 banana, 1 cup almond milk, 1 tbsp peanut butter, ice.",
+    instructions:
+      "1. Add all ingredients to a blender. 2. Blend until smooth. 3. Serve immediately.",
+    main_image: "images/smoothie.webp",
   },
   {
-    "_id": 9,
-    "name": "Tuna Stuffed Peppers",
-    "category": "Low Carb",
-    "calories": 340,
-    "protein": 36,
-    "carbs": 18,
-    "fat": 12,
-    "prep_time": "20 min",
-    "description": "Bell peppers stuffed with seasoned tuna and topped with cheese.",
-    "ingredients": "2 bell peppers, 2 cans tuna, 2 tbsp mayo, 1 tbsp mustard, celery, shredded cheese, salt and pepper.",
-    "instructions": "1. Halve and seed peppers. 2. Mix tuna with mayo, mustard, celery, salt, and pepper. 3. Fill peppers and top with cheese. 4. Bake at 375°F for 15 minutes.",
-    "main_image": "images/peppers.webp"
+    _id: 9,
+    name: "Tuna Stuffed Peppers",
+    category: "Low Carb",
+    calories: 340,
+    protein: 36,
+    carbs: 18,
+    fat: 12,
+    prep_time: "20 min",
+    description:
+      "Bell peppers stuffed with seasoned tuna and topped with cheese.",
+    ingredients:
+      "2 bell peppers, 2 cans tuna, 2 tbsp mayo, 1 tbsp mustard, celery, shredded cheese, salt and pepper.",
+    instructions:
+      "1. Halve and seed peppers. 2. Mix tuna with mayo, mustard, celery, salt, and pepper. 3. Fill peppers and top with cheese. 4. Bake at 375°F for 15 minutes.",
+    main_image: "images/peppers.webp",
   },
   {
-    "_id": 10,
-    "name": "Sweet Potato & Black Bean Bowl",
-    "category": "Plant-Based",
-    "calories": 430,
-    "protein": 16,
-    "carbs": 62,
-    "fat": 11,
-    "prep_time": "30 min",
-    "description": "A colorful, nutrient-dense bowl packed with complex carbs.",
-    "ingredients": "1 sweet potato, 1 can black beans, 1 cup brown rice, avocado, lime, cilantro, cumin, chili powder.",
-    "instructions": "1. Roast cubed sweet potato at 400°F for 25 min. 2. Cook rice per package. 3. Warm black beans with cumin and chili powder. 4. Assemble bowl and top with avocado, lime, and cilantro.",
-    "main_image": "images/sweet-potato-bowl.webp"
-  }
+    _id: 10,
+    name: "Sweet Potato & Black Bean Bowl",
+    category: "Plant-Based",
+    calories: 430,
+    protein: 16,
+    carbs: 62,
+    fat: 11,
+    prep_time: "30 min",
+    description: "A colorful, nutrient-dense bowl packed with complex carbs.",
+    ingredients:
+      "1 sweet potato, 1 can black beans, 1 cup brown rice, avocado, lime, cilantro, cumin, chili powder.",
+    instructions:
+      "1. Roast cubed sweet potato at 400°F for 25 min. 2. Cook rice per package. 3. Warm black beans with cumin and chili powder. 4. Assemble bowl and top with avocado, lime, and cilantro.",
+    main_image: "images/sweet-potato-bowl.webp",
+  },
 ];
 
+// ── Joi Schema ───────────────────────────────────────────
+const recipeSchema = Joi.object({
+  name: Joi.string().min(2).max(100).required(),
+  category: Joi.string().min(2).max(50).required(),
+  calories: Joi.number().integer().min(1).max(5000).required(),
+  protein: Joi.number().min(0).max(500).required(),
+  carbs: Joi.number().min(0).max(500).required(),
+  fat: Joi.number().min(0).max(500).required(),
+  prep_time: Joi.string().min(1).max(30).required(),
+  description: Joi.string().min(5).max(300).required(),
+  ingredients: Joi.string().min(5).max(1000).required(),
+  instructions: Joi.string().min(5).max(1000).required(),
+});
+
+// ── GET all recipes ──────────────────────────────────────
 app.get("/api/recipes", (req, res) => {
   res.send(recipes);
 });
 
+// ── GET single recipe ────────────────────────────────────
 app.get("/api/recipes/:id", (req, res) => {
   const recipe = recipes.find((r) => r._id === parseInt(req.params.id));
+  if (!recipe) return res.status(404).send({ message: "Recipe not found" });
   res.send(recipe);
 });
 
-// listen for incoming requests
+// ── POST new recipe ──────────────────────────────────────
+app.post("/api/recipes", (req, res) => {
+  const { error } = recipeSchema.validate(req.body);
+  if (error) return res.status(400).send({ message: error.details[0].message });
+
+  const newRecipe = {
+    _id: recipes.length + 1,
+    ...req.body,
+    main_image: "images/recipes.png",
+  };
+
+  recipes.push(newRecipe);
+  res.status(201).send(newRecipe);
+});
+
+// ── Listen ───────────────────────────────────────────────
 app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
