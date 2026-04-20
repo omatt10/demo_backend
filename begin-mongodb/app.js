@@ -350,3 +350,27 @@ app.post("/api/recipes", (req, res) => {
 app.listen(3001, () => {
   console.log("Server is running on port 3001");
 });
+
+// ── PUT edit recipe ──────────────────────────────────────
+app.put("/api/recipes/:id", (req, res) => {
+  const recipe = recipes.find((r) => r._id === parseInt(req.params.id));
+  if (!recipe) return res.status(404).send({ message: "Recipe not found" });
+  const { error } = recipeSchema.validate(req.body);
+  if (error) return res.status(400).send({ message: error.details[0].message });
+  Object.assign(recipe, req.body);
+  res.send(recipe);
+});
+
+// ── DELETE recipe ────────────────────────────────────────
+app.delete("/api/recipes/:id", (req, res) => {
+  const index = recipes.findIndex((r) => r._id === parseInt(req.params.id));
+  if (index === -1) return res.status(404).send({ message: "Recipe not found" });
+  recipes.splice(index, 1);
+  res.send({ message: "Recipe deleted successfully" });
+});
+
+// ── Listen ───────────────────────────────────────────────
+app.listen(3001, () => {
+  console.log("Server is running on port 3001");
+});
+
